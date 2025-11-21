@@ -1,10 +1,30 @@
 class StudentSGrades:
     def __init__(self):
+        """Initialize a class to manage student grades.
+
+        Creates empty data structures to store information about students
+        and their academic performance.
+        """
         self.students = []
         self.average = []
 
 
     def check_student(self, name):
+        """Checks the correctness of the student's name and its presence in the list.
+
+        Performs two basic checks:
+            1. Checks that the name is not empty after clearing spaces.
+            2. Checks if a student with that name exists in the list (case-insensitive and spaces-free)
+
+        Args:
+            name (str): The name of the student to check
+
+        Returns:
+            bool:
+                - False if the name is empty after clearing
+                - True if a student with the same name already exists in the list.
+                - False if a student with the same name is not found.
+        """
         clean_name = name.strip().lower()
         if len(clean_name) < 1:
             return False
@@ -16,6 +36,16 @@ class StudentSGrades:
 
     @staticmethod
     def check_correct_name(name):
+        """Verifies the correctness of the student's name and normalizes it.
+
+        Args:
+            name (str): The student's original name for verification and normalization
+
+        Returns:
+            str or None:
+                - Normalized name if successful
+                - None if the name is empty or contains numbers.
+        """
         if not name or not name.strip():
             print("The name can't be empty!")
             return None
@@ -32,6 +62,14 @@ class StudentSGrades:
 
 
     def add_to_dictionary(self, name):
+        """Adds it to the dictionary list
+
+        If the self.check_student check is successful, it adds the student
+        to the dictionary sheet with an empty list of grades, otherwise we return to the beginning.
+
+        Args:
+            - name(str): The corrected name of the student for verification and normalization
+        """
         correct_name = self.check_correct_name(name)
         if correct_name is None:
             return
@@ -50,24 +88,35 @@ class StudentSGrades:
 
 
     def add_grade_to_student(self, name):
+        """Adds grades for the specified student.
+
+        The process of adding ratings:
+
+        Args:
+            name (str): The name of the student for whom grades are being added
+
+        Returns:
+            bool:
+                - False if the student does not exist
+                - True if the scores were added successfully
+        """
         exists = self.check_student(name)
         if not exists:
             print(f"Student {name} not exist!")
             return False
         else:
             while True:
-                new_grades = input("Enter the score (or 'done' to exit): ")
+                new_grades = input("Enter the score (or 'done' to exit): ").lower()
                 if new_grades == "done":
                     print("The input of ratings is completed")
                     break
                 try:
-                    grade = round(float(new_grades), 2)
+                    grade = round(float(new_grades), 1)
                     for student in self.students:
                         if student["name"] == name:
                             student["grades"].append(grade)
                             self.average.append(grade)
                             print(f"Grade {grade} added for {name}")
-                            print("Dictionary", self.students)
                             break
                 except ValueError:
                     print("Mistake! Enter a number or 'done'")
@@ -75,8 +124,23 @@ class StudentSGrades:
 
 
     def get_all_students(self):
-        """Get a list of all students with an average score."""
+        """Outputs a report on all students with statistics calculated.
 
+        Displays for each student:
+            - Average score on all grades (if there are grades)
+            - Message 'N/A' if the student has no grades
+
+        After displaying the individual results, it displays the overall statistics.:
+            - Maximum average score among all students
+            - Minimum average score among all students
+            - The overall average score for all grades of all students
+
+        Returns:
+            None: The function does not return values, but outputs a report to the console.
+
+        Raises:
+            ZeroDivisionError: Handled inside the function for students without grades
+            """
         if not self.students:
             print("There is no list of students")
 
@@ -97,7 +161,21 @@ class StudentSGrades:
 
 
     def find_the_best_student(self):
-        """Find the best student """
+        """
+        Finds the student with the highest average score.
+
+        The search process:
+            1. Checks the presence of students in the list
+            2. Filters students who have at least one grade.
+            3. Uses the max() function with a lambda expression to find the student
+            with a maximum average score
+            4. Displays information about the best student
+
+        Note:
+            - The arithmetic mean of all student grades is used for the calculation.
+            - The comparison takes place among students who have at least one grade
+            - Lambda function: lambda student: sum(student["grades"]) / len(student["grades"])
+        """
         if not self.students:
             print("Student not found!")
             return
@@ -113,10 +191,15 @@ class StudentSGrades:
 
         best_average = sum(best_student["grades"]) / len(best_student["grades"])
         print(f"The student with the highest average is {best_student['name']}"
-              f"with a grade of {best_average:.2f}")
+              f"with a grade of {best_average:.1f}")
 
 
     def mainloop(self):
+        """The program's main loop is the user interface.
+
+        loop continues until the user selects the exit option.
+        If an invalid option is entered, a warning message is displayed.
+        """
         while True:
             print("-" * 28)
             print("---Student Grade Analyzer---")
@@ -141,6 +224,7 @@ class StudentSGrades:
             elif choice == "4":
                 self.find_the_best_student()
             elif choice == "5":
+                print("Existing program")
                 break
             else:
                 print("Invalid option!")
