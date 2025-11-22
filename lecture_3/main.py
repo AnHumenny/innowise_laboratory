@@ -13,7 +13,7 @@ class StudentSGrades:
         """Checks the correctness of the student's name and its presence in the list.
 
         Performs two basic checks:
-            1. Checks that the name is not empty after clearing spaces.
+            1. Checks that the name is not empty after clearing spaces
             2. Checks if a student with that name exists in the list (case-insensitive and spaces-free)
 
         Args:
@@ -22,15 +22,18 @@ class StudentSGrades:
         Returns:
             bool:
                 - False if the name is empty after clearing
-                - True if a student with the same name already exists in the list.
-                - False if a student with the same name is not found.
+                - True if a student with the same name already exists in the list
+                - False if a student with the same name is not found
         """
         clean_name = name.strip().lower()
+
         if len(clean_name) < 1:
             return False
+
         for student in self.students:
             if student["name"].strip().lower() == clean_name:
                 return True
+
         return False
 
 
@@ -44,7 +47,7 @@ class StudentSGrades:
         Returns:
             str or None:
                 - Normalized name if successful
-                - None if the name is empty or contains numbers.
+                - None if the name is empty or contains numbers
         """
         if not name or not name.strip():
             print("The name can't be empty!")
@@ -58,14 +61,15 @@ class StudentSGrades:
                 return None
 
         correct_name = " ".join(word.capitalize() for word in name_parts)
+
         return correct_name
 
 
     def add_to_dictionary(self, name):
-        """Adds it to the dictionary list
+        """Adds it to the dictionary list.
 
         If the self.check_student check is successful, it adds the student
-        to the dictionary sheet with an empty list of grades, otherwise we return to the beginning.
+        to the dictionary sheet with an empty list of grades, otherwise we return to the beginning
 
         Args:
             - name(str): The corrected name of the student for verification and normalization
@@ -75,16 +79,15 @@ class StudentSGrades:
             return
 
         exists = self.check_student(correct_name)
-        print("exists", exists)
 
         if exists:
             print(f"Student {correct_name} already exist!")
             return
+
         else:
             new_student = {"name": correct_name, "grades": []}
             self.students.append(new_student)
             print(f"Student {correct_name} added!")
-            print("List of students:", self.students)
 
 
     def add_grade_to_student(self, name):
@@ -101,25 +104,38 @@ class StudentSGrades:
                 - True if the scores were added successfully
         """
         exists = self.check_student(name)
+
         if not exists:
             print(f"Student {name} not exist!")
             return False
+
         else:
             while True:
                 new_grades = input("Enter the score (or 'done' to exit): ").lower()
+
                 if new_grades == "done":
                     print("The input of ratings is completed")
                     break
+
                 try:
                     grade = round(float(new_grades), 1)
+
                     for student in self.students:
+                        if not (0 <= grade <= 100):
+                            print("The grade must be between 0 and 100!")
+                            break
+
                         if student["name"] == name:
                             student["grades"].append(grade)
                             self.average.append(grade)
                             print(f"Grade {grade} added for {name}")
                             break
+
+                    print("dictionary", self.students)
+
                 except ValueError:
                     print("Mistake! Enter a number or 'done'")
+
             return True
 
 
@@ -130,13 +146,13 @@ class StudentSGrades:
             - Average score on all grades (if there are grades)
             - Message 'N/A' if the student has no grades
 
-        After displaying the individual results, it displays the overall statistics.:
+        After displaying the individual results, it displays the overall statistics:
             - Maximum average score among all students
             - Minimum average score among all students
             - The overall average score for all grades of all students
 
         Returns:
-            None: The function does not return values, but outputs a report to the console.
+            None: The function does not return values, but outputs a report to the console
 
         Raises:
             ZeroDivisionError: Handled inside the function for students without grades
@@ -148,6 +164,7 @@ class StudentSGrades:
             try:
                 student_average = sum(student["grades"]) / len(student["grades"])
                 print(f"{student['name']}`s average grade is {student_average:.1f}")
+
             except ZeroDivisionError:
                 print(f"Average score {student['name']}: N/A")
 
@@ -166,13 +183,13 @@ class StudentSGrades:
 
         The search process:
             1. Checks the presence of students in the list
-            2. Filters students who have at least one grade.
+            2. Filters students who have at least one grade
             3. Uses the max() function with a lambda expression to find the student
             with a maximum average score
             4. Displays information about the best student
 
         Note:
-            - The arithmetic mean of all student grades is used for the calculation.
+            - The arithmetic mean of all student grades is used for the calculation
             - The comparison takes place among students who have at least one grade
             - Lambda function: lambda student: sum(student["grades"]) / len(student["grades"])
         """
@@ -191,14 +208,14 @@ class StudentSGrades:
 
         best_average = sum(best_student["grades"]) / len(best_student["grades"])
         print(f"The student with the highest average is {best_student['name']}"
-              f"with a grade of {best_average:.1f}")
+              f" with a grade of {best_average:.1f}")
 
 
     def mainloop(self):
         """The program's main loop is the user interface.
 
-        loop continues until the user selects the exit option.
-        If an invalid option is entered, a warning message is displayed.
+        Loop continues until the user selects the exit option
+        If an invalid option is entered, a warning message is displayed
         """
         while True:
             print("-" * 28)
