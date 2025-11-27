@@ -6,217 +6,176 @@ class StudentSGrades:
         and their academic performance.
         """
         self.students = []
-        self.average = []
-
-
-    def check_student(self, name):
-        """Checks the correctness of the student's name and its presence in the list.
-
-        Performs two basic checks:
-            1. Checks that the name is not empty after clearing spaces
-            2. Checks if a student with that name exists in the list (case-insensitive and spaces-free)
-
-        Args:
-            name (str): The name of the student to check
-
-        Returns:
-            bool:
-                - False if the name is empty after clearing
-                - True if a student with the same name already exists in the list
-                - False if a student with the same name is not found
-        """
-        clean_name = name.strip().lower()
-
-        if len(clean_name) < 1:
-            return False
-
-        for student in self.students:
-            if student["name"].strip().lower() == clean_name:
-                return True
-
-        return False
-
 
     @staticmethod
-    def check_correct_name(name):
+    def check_correct_name(name: str):
         """Verifies the correctness of the student's name and normalizes it.
 
-        Args:
-            name (str): The student's original name for verification and normalization
-
-        Returns:
-            str or None:
-                - Normalized name if successful
-                - None if the name is empty or contains numbers
+        Checks:
+        - Not empty
+        - Contains no digits
+        - Contains no forbidden special characters
+        - Allowed: letters, spaces, hyphen (-), apostrophe (')
         """
+
         if not name or not name.strip():
             print("The name can't be empty!")
             return None
 
-        name_parts = name.strip().split()
+        parts = name.strip().split()
 
-        for name in name_parts:
-            if any(char.isdigit() for char in name):
-                print("The name must not contain numbers!")
-                return None
+        if any(any(ch.isdigit() for ch in word) for word in parts):
+            print("The name must not contain numbers!")
+            return None
 
-        correct_name = " ".join(word.capitalize() for word in name_parts)
+        allowed_extra = set(" -'")
 
-        return correct_name
+        if any(not (ch.isalpha() or ch in allowed_extra) for ch in name):
+            print("The name contains invalid characters!")
+            return None
+
+        return " ".join(x.capitalize() for x in parts)
 
 
-    def add_to_dictionary(self, name):
-        """Adds it to the dictionary list.
+    def check_student(self, name: str):
+        """Finds a student by name (case-insensitive).
 
-        If the self.check_student check is successful, it adds the student
-        to the dictionary sheet with an empty list of grades, otherwise we return to the beginning
+        Searches through the student list for a case-insensitive match
+        of the provided name.
 
         Args:
-            - name(str): The corrected name of the student for verification and normalization
+            name (str): The student's name to search for
+
+        Returns:
+            dict or None: Student dictionary if found, None if no match found
+        """
+        clean = name.strip().lower()
+        for st in self.students:
+            if st["name"].lower() == clean:
+                return st
+        return None
+
+
+    def add_to_dictionary(self, name: str):
+        """Adds a new student to the dictionary after validation.
+
+        Validates the student name, checks for duplicates, and adds the student
+        to the dictionary with an empty grades list if validation passes.
+
+        Args:
+            name (str): The student's name to add
+
+        Returns:
+            None: This method doesn't return anything but may print status messages
         """
         correct_name = self.check_correct_name(name)
         if correct_name is None:
             return
 
-        exists = self.check_student(correct_name)
-
-        if exists:
+        if self.check_student(correct_name):
             print(f"Student {correct_name} already exist!")
             return
 
-        else:
-            new_student = {"name": correct_name, "grades": []}
-            self.students.append(new_student)
-            print(f"Student {correct_name} added!")
+        self.students.append({"name": correct_name, "grades": []})
+        print(f"Student {correct_name} added!")
 
 
-    def add_grade_to_student(self, name):
-        """Adds grades for the specified student.
+    def add_grade_to_student(self, name: str):
+        """Adds grades for a student through interactive input.
 
-        The process of adding ratings:
+        Prompts the user to enter grades for a specified student in a loop.
+        Validates each grade and adds it to the student's record.
 
         Args:
-            name (str): The name of the student for whom grades are being added
+            name (str): The name of the student to add grades for
 
         Returns:
-            bool:
-                - False if the student does not exist
-                - True if the scores were added successfully
-        """
-        exists = self.check_student(name)
+            bool: True if operation completed (student exists), False if student not found
 
-        if not exists:
+        """
+        student = self.check_student(name)
+        if not student:
             print(f"Student {name} not exist!")
             return False
 
-        else:
-            while True:
-                new_grades = input("Enter the score (or 'done' to exit): ").lower()
+        while True:
+            new_grade = input("Enter the grade (or 'done' to finish): ").lower().strip()
 
-                if new_grades == "done":
-                    print("The input of ratings is completed")
-                    break
+            if new_grade == "done":
+                print("The input of ratings is completed")
+                break
 
-                try:
-                    grade = round(float(new_grades), 1)
+            try:
+                grade = round(float(new_grade), 1)
 
-                    for student in self.students:
-                        if not (0 <= grade <= 100):
-                            print("The grade must be between 0 and 100!")
-                            break
+                if not (0 <= grade <= 100):
+                    print("The grade must be between 0 and 100!")
+                    continue
 
-                        if student["name"] == name:
-                            student["grades"].append(grade)
-                            self.average.append(grade)
-                            print(f"Grade {grade} added for {name}")
-                            break
+                student["grades"].append(grade)
+                print(f"Grade {grade} added for {student['name']}")
 
-                    print("dictionary", self.students)
+            except ValueError:
+                print("Invalid input. Please enter a number.")
 
-                except ValueError:
-                    print("Mistake! Enter a number or 'done'")
-
-            return True
+        return True
 
 
     def get_all_students(self):
-        """Outputs a report on all students with statistics calculated.
+        """Displays student averages and summary statistics.
 
-        Displays for each student:
-            - Average score on all grades (if there are grades)
-            - Message 'N/A' if the student has no grades
-
-        After displaying the individual results, it displays the overall statistics:
-            - Maximum average score among all students
-            - Minimum average score among all students
-            - The overall average score for all grades of all students
+        Calculates and displays the average grade for each student, followed by
+        overall class statistics including maximum, minimum, and overall average.
 
         Returns:
-            None: The function does not return values, but outputs a report to the console
-
-        Raises:
-            ZeroDivisionError: Handled inside the function for students without grades
-            """
+            None: Outputs results directly to console
+        """
         if not self.students:
             print("There is no list of students")
-
-        for student in self.students:
-            try:
-                student_average = sum(student["grades"]) / len(student["grades"])
-                print(f"{student['name']}`s average grade is {student_average:.1f}")
-
-            except ZeroDivisionError:
-                print(f"Average score {student['name']}: N/A")
-
-        if len(self.average) == 0:
-            print("The list of student grades is incomplete!")
             return
 
-        print(f"Max average: {max(self.average):.1f}")
-        print(f"Min average: {min(self.average):.1f}")
-        print(f"Overall average: {sum(self.average) / len(self.average):.1f}")
+        student_averages = []
+
+        for student in self.students:
+            if student["grades"]:
+                avg = sum(student["grades"]) / len(student["grades"])
+                student_averages.append(avg)
+                print(f"{student['name']}`s average grade is {avg:.1f}.")
+            else:
+                print(f"{student['name']}`s average grade is: N/A.")
+
+        if not student_averages:
+            print("No grades to analyze!")
+            return
+        print("-" * 28)
+        print(f"Max average: {max(student_averages):.1f}")
+        print(f"Min average: {min(student_averages):.1f}")
+        print(f"Overall average: {sum(student_averages) / len(student_averages):.1f}")
 
 
     def find_the_best_student(self):
+        """Finds the student with the highest average grade.
+
+        Identifies the top-performing student based on their average grade.
+        Only considers students who have at least one grade recorded.
+
+        Returns:
+            None: Outputs the result directly to console
         """
-        Finds the student with the highest average score.
-
-        The search process:
-            1. Checks the presence of students in the list
-            2. Filters students who have at least one grade
-            3. Uses the max() function with a lambda expression to find the student
-            with a maximum average score
-            4. Displays information about the best student
-
-        Note:
-            - The arithmetic mean of all student grades is used for the calculation
-            - The comparison takes place among students who have at least one grade
-            - Lambda function: lambda student: sum(student["grades"]) / len(student["grades"])
-        """
-        if not self.students:
-            print("Student not found!")
-            return
-
-        students_with_grades = [s for s in self.students if s["grades"]]
+        students_with_grades = [x for x in self.students if x["grades"]]
 
         if not students_with_grades:
             print("There are no grades in the list of students!")
             return
 
         best_student = max(students_with_grades,
-                           key=lambda student: sum(student["grades"]) / len(student["grades"]))
+                           key=lambda st: sum(st["grades"]) / len(st["grades"]))
 
         best_average = sum(best_student["grades"]) / len(best_student["grades"])
-        print(f"The student with the highest average is {best_student['name']}"
-              f" with a grade of {best_average:.1f}")
-
+        print(f"The student with the highest average is {best_student['name']} "
+              f"with a grade of {best_average:.1f}.")
 
     def mainloop(self):
-        """The program's main loop is the user interface.
-
-        Loop continues until the user selects the exit option
-        If an invalid option is entered, a warning message is displayed
-        """
         while True:
             print("-" * 28)
             print("---Student Grade Analyzer---")
@@ -233,16 +192,21 @@ class StudentSGrades:
             if choice == "1":
                 name = input("Input the name of the new student: ")
                 self.add_to_dictionary(name)
+
             elif choice == "2":
-                grades = input("Add grades for a student: ")
-                self.add_grade_to_student(grades)
+                name = input("Add grades for a student: ")
+                self.add_grade_to_student(name)
+
             elif choice == "3":
                 self.get_all_students()
+
             elif choice == "4":
                 self.find_the_best_student()
+
             elif choice == "5":
-                print("Existing program")
+                print("Exiting program.")
                 break
+
             else:
                 print("Invalid option!")
 
