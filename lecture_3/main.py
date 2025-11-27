@@ -106,7 +106,7 @@ class StudentSGrades:
                 break
 
             try:
-                grade = round(float(new_grade), 1)
+                grade = int(new_grade)
 
                 if not (0 <= grade <= 100):
                     print("The grade must be between 0 and 100!")
