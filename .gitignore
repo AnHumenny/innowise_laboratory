@@ -48,7 +48,10 @@ Thumbs.db
 *.pid
 *.spec
 
+# Ignore SQL files
+*.sql
+!lecture_4/*.sql
+
 # Databases
 *.db
-!lecture_4/grades.sql
-!lecture_4/grades.db
+!lecture_4/school.db
