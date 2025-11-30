@@ -7,14 +7,14 @@
 -- =============================================
 
 -- Table of students
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
     id INTEGER PRIMARY KEY,
     full_name TEXT NOT NULL,
     birth_year INTEGER NOT NULL
 );
 
 -- Rating table
-CREATE TABLE grades (
+CREATE TABLE IF NOT EXISTS grades (
     id INTEGER PRIMARY KEY,
     student_id INTEGER NOT NULL,
     subject TEXT NOT NULL,
