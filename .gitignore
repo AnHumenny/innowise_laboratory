@@ -51,3 +51,4 @@ Thumbs.db
 # Databases
 *.db
 !lecture_4/grades.sql
+!lecture_4/grades.db
