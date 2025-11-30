@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-DB_FILE = "grades.db"
+DB_FILE = "school.db"
 
 def get_db_connection():
     """Creates a connection to the database and enables the foreign key."""
@@ -27,8 +27,8 @@ def initialize_database():
 
     cur.execute("""
         CREATE TABLE IF NOT EXISTS students (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            full_name TEXT NOT NULL,
+            id INTEGER PRIMARY KEY,
+            full_name TEXT NOT NULL UNIQUE,
             birth_year INTEGER NOT NULL
         )
         """)
@@ -45,6 +45,16 @@ def initialize_database():
                 ON UPDATE CASCADE
         )
         """)
+
+    cur.execute("""
+        CREATE INDEX IF NOT EXISTS idx_grades_student_id
+        ON grades(student_id)
+    """)
+
+    cur.execute("""
+        CREATE INDEX IF NOT EXISTS idx_grades_subject
+        ON grades(subject)
+    """)
 
     cur.execute("""
             INSERT INTO students (full_name, birth_year) VALUES

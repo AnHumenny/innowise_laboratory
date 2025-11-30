@@ -9,7 +9,7 @@
 -- Table of students
 CREATE TABLE IF NOT EXISTS students (
     id INTEGER PRIMARY KEY,
-    full_name TEXT NOT NULL,
+    full_name TEXT NOT NULL UNIQUE,
     birth_year INTEGER NOT NULL
 );
 
@@ -25,6 +25,19 @@ CREATE TABLE IF NOT EXISTS grades (
         ON UPDATE CASCADE
 );
 
+-- ========================
+--  Indexes
+-- ========================
+
+-- speeds up JOIN and student grade search
+CREATE INDEX IF NOT EXISTS idx_grades_student_id
+    ON grades(student_id);
+
+-- speeds up item queries
+CREATE INDEX IF NOT EXISTS idx_grades_subject
+    ON grades(subject);
+
+-- =============================================
 -- INSERTING DATA
 -- =============================================
 
@@ -124,48 +137,30 @@ VALUES ('John Doe', 2000);
 INSERT INTO grades (student_id, subject, grade)
 SELECT id, 'Math', 100
 FROM students
-WHERE full_name = 'Alice Johnson';
+WHERE full_name = 'John Doe';
 
 -- Delete student
 DELETE FROM students
-WHERE full_name = 'Alice Johnson';
+WHERE full_name = 'John Doe';
 
 -- All grades of a particular student (by ID)
 SELECT subject, grade
 FROM grades
 WHERE student_id = 1;
 
+-- Update data by full_name and birt_year for personal student and subject
+UPDATE grades
+SET grade = 100
+WHERE student_id = (
+    SELECT id FROM students
+    WHERE full_name = 'Alice Johnson'
+      AND birth_year = 2005
+)
+AND subject = 'Math';
+
 -- All students
 SELECT id, full_name, birth_year
 FROM students;
-
--- Student's grades (numeric values only)
-SELECT grade
-FROM grades
-WHERE student_id = 1;
-
--- CREATING INDEXES FOR OPTIMIZATION
--- =============================================
-
--- An index to search for students by name and year of birth
-CREATE INDEX idx_students_name_birthyear
-ON students(full_name, birth_year);
-
--- Index for searching grades by student_id
-CREATE INDEX idx_grades_student_id
-ON grades(student_id);
-
--- An index for searching by subject
-CREATE INDEX idx_grades_subject
-ON grades(subject);
-
--- Index for filtering by year of birth
-CREATE INDEX idx_students_birthyear
-ON students(birth_year);
-
--- Index for filtering by estimates
-CREATE INDEX idx_grades_grade
-ON grades(grade);
 
 -- VERIFICATION REQUESTS
 -- =============================================
