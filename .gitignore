@@ -50,7 +50,7 @@ Thumbs.db
 
 # Ignore SQL files
 *.sql
-!lecture_4/*.sql
+!lecture_4/data.sql
 
 # Databases
 *.db
