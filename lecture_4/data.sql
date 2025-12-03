@@ -9,7 +9,7 @@
 
 -- Table of students
 CREATE TABLE IF NOT EXISTS students (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     full_name TEXT NOT NULL,
     birth_year INTEGER NOT NULL
         CHECK (birth_year >= 1900)
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS students (
 
 -- Rating table (grade can be NULL if not yet assigned)
 CREATE TABLE IF NOT EXISTS grades (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
     subject TEXT NOT NULL,
     grade INTEGER CHECK (grade BETWEEN 1 AND 100),
