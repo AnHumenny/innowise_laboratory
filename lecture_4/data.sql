@@ -88,16 +88,32 @@ INSERT INTO grades (student_id, subject, grade) VALUES
 -- QUERIES
 -- =============================================
 
--- All grades for a specific student (Alice Johnson)
-SELECT s.full_name, g.subject, g.grade
+-- Find all grades for a specific student (Alice Johnson)
+SELECT
+    s.id,
+    s.full_name,
+    s.birth_year,
+    GROUP_CONCAT(gd.subject_grade, ', ') AS grades
 FROM students s
-JOIN grades g ON s.id = g.student_id
-WHERE s.id = 1;
+LEFT JOIN (
+    SELECT DISTINCT student_id, subject || ': ' || grade AS subject_grade
+    FROM grades
+) gd ON s.id = gd.student_id
+WHERE s.full_name = 'Alice Johnson'
+GROUP BY s.id, s.full_name, s.birth_year
+ORDER BY s.id;
 
--- Average score for each student (ignores NULL grades)
-SELECT s.full_name, AVG(g.grade) AS average_grade
+-- Average score for each student (ignores NULL grades, removes duplicates)
+SELECT
+    s.id,
+    s.full_name,
+    AVG(g.grade) AS average_grade
 FROM students s
-LEFT JOIN grades g ON s.id = g.student_id
+LEFT JOIN (
+    SELECT DISTINCT student_id, subject, grade
+    FROM grades
+    WHERE grade IS NOT NULL
+) g ON s.id = g.student_id
 GROUP BY s.id, s.full_name
 ORDER BY average_grade DESC;
 
@@ -107,25 +123,31 @@ FROM students
 WHERE birth_year > 2004
 ORDER BY birth_year;
 
--- Subjects and their average grades (ignores NULL grades)
+-- Subjects and their average grades (ignores NULL grades, removes duplicates)
 SELECT subject, AVG(grade) AS average_grade
-FROM grades
-WHERE grade IS NOT NULL
+FROM (
+    SELECT DISTINCT student_id, subject, grade
+    FROM grades
+    WHERE grade IS NOT NULL
+) AS unique_grades
 GROUP BY subject
 ORDER BY average_grade DESC;
 
--- Top 3 students with the highest average scores (ignores NULL grades)
-SELECT s.full_name, AVG(g.grade) AS average_grade
+-- Top 3 students with the highest average scores (ignores NULL grades, removes duplicates)
+SELECT s.id, s.full_name, AVG(g.grade) AS average_grade
 FROM students s
-JOIN grades g ON s.id = g.student_id
-WHERE g.grade IS NOT NULL
+JOIN (
+    SELECT DISTINCT student_id, subject, grade
+    FROM grades
+    WHERE grade IS NOT NULL
+) g ON s.id = g.student_id
 GROUP BY s.id, s.full_name
 ORDER BY average_grade DESC
 LIMIT 3;
 
 -- Students who have at least one grade below 80 (ignores NULL grades)
-SELECT DISTINCT s.full_name, s.birth_year
+SELECT DISTINCT s.id, s.full_name, s.birth_year
 FROM students s
 JOIN grades g ON s.id = g.student_id
 WHERE g.grade IS NOT NULL AND g.grade < 80
-ORDER BY s.full_name;
+ORDER BY s.id;
