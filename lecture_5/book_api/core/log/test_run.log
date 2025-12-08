@@ -1,0 +1,50 @@
+[INFO] 16:54:34 - ==================================================
+[INFO] 16:54:34 - TEST LOGGER STARTED
+[INFO] 16:54:34 - Log file: /home/master/work/repository/innowise_laboratory/lecture_5/book_api/core/log/test_run.log
+[INFO] 16:54:34 - ==================================================
+[INFO] 16:54:34 - Starting test: test_list_books_api
+[INFO] 16:54:34 - test_list_books_api: GET /books/ -> 200
+[INFO] 16:54:34 - test_list_books_api: Response contains 10 books
+[INFO] 16:54:34 - test_list_books_api: Sample books fields: ['id', 'title', 'author', 'year']
+[INFO] 16:54:34 - Test passed: test_list_books_api
+[INFO] 16:54:34 - Starting test: test_create_book_api
+[INFO] 16:54:34 - test_create_book_api: POST /books/add -> 201
+[INFO] 16:54:34 - test_create_book_api: Created book with id=11
+[INFO] 16:54:34 - Test passed: test_create_book_api
+[INFO] 16:54:34 - Starting test: test_create_book_api_validation
+[INFO] 16:54:34 - test_create_book_api_validation: POST /books/add (invalid) -> 422
+[INFO] 16:54:34 - test_create_book_api_validation: Validation error: [{'type': 'missing', 'loc': ['body', 'title'], 'msg': 'Field required', 'input': {'author': 'Author Only'}}]
+[INFO] 16:54:34 - Test passed: test_create_book_api_validation
+[INFO] 16:54:34 - Fixture: Created book with ID: 12
+[INFO] 16:54:34 - Fixture: Response JSON: {'id': 12, 'title': 'API Test Book', 'author': 'API Test Author', 'year': 2024}
+[INFO] 16:54:34 - Fixture: Response status: 201
+[INFO] 16:54:34 - Starting test: test_get_book_api
+[INFO] 16:54:34 - test_get_book_api: GET /books/12 -> 200
+[INFO] 16:54:34 - test_get_book_api: Retrieved book: API Test Book
+[INFO] 16:54:34 - Test passed: test_get_book_api
+[INFO] 16:54:34 - Fixture: Created book with ID: 13
+[INFO] 16:54:34 - Fixture: Response JSON: {'id': 13, 'title': 'API Test Book', 'author': 'API Test Author', 'year': 2024}
+[INFO] 16:54:34 - Fixture: Response status: 201
+[INFO] 16:54:34 - Starting test: test_update_book_api
+[INFO] 16:54:34 - test_update_book_api: Update data: {'title': 'API Updated Title', 'author': 'API Updated Author', 'year': 2025}
+[INFO] 16:54:34 - test_update_book_api: PUT /books/13 -> 200
+[INFO] 16:54:34 - test_update_book_api: Updated book: API Updated Title
+[INFO] 16:54:34 - Test passed: test_update_book_api
+[INFO] 16:54:34 - Fixture: Created book with ID: 14
+[INFO] 16:54:34 - Fixture: Response JSON: {'id': 14, 'title': 'API Test Book', 'author': 'API Test Author', 'year': 2024}
+[INFO] 16:54:34 - Fixture: Response status: 201
+[INFO] 16:54:34 - Starting test: test_delete_book_api
+[INFO] 16:54:34 - test_delete_book_api: DELETE /books/remove/14 -> 200
+[INFO] 16:54:34 - test_delete_book_api: Delete response: Item 14 removed from database
+[INFO] 16:54:34 - test_delete_book_api: GET after DELETE -> 404
+[INFO] 16:54:34 - Test passed: test_delete_book_api
+[INFO] 16:54:34 - Starting test: test_search_books_api
+[INFO] 16:54:34 - test_search_books_api: Created test book: Python API Testing (id=14)
+[INFO] 16:54:35 - test_search_books_api: Created test book: FastAPI Guide (id=15)
+[INFO] 16:54:35 - test_search_books_api: GET /books/search?title=Python -> 200
+[INFO] 16:54:35 - test_search_books_api: Found 2 books with 'Python'
+[INFO] 16:54:35 - Test passed: test_search_books_api
+[INFO] 16:54:35 - Starting test: test_api_pagination
+[INFO] 16:54:35 - test_api_pagination: GET /books/?page=1&limit=3 -> 200
+[INFO] 16:54:35 - test_api_pagination: Page 1 with limit 3: 3 books
+[INFO] 16:54:35 - Test passed: test_api_pagination
