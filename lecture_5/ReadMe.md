@@ -68,6 +68,7 @@ lecture_5/
     │   │   │   ├── app.log
     │   │   │   ├── test.run.log
     │   │   │   └── test_log.py
+    │   │   ├── test_log.py
     │   │   └── utils.py
     │   │
     │   ├── repository/
