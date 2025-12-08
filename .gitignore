@@ -17,6 +17,7 @@ __pycache__/
 
 # Folders with temporary files
 *.log
+!lecture_5/book_api/core/log/*.log
 *.pot
 
 # Folders with dependencies
@@ -55,3 +56,4 @@ Thumbs.db
 # Databases
 *.db
 !lecture_4/school.db
+!lecture_5/book_api/repository/DB.db
