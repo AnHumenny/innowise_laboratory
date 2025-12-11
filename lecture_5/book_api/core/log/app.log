@@ -1,0 +1,47 @@
+2025-12-11 03:00:38,194 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:00:54,593 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:00:54,878 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-11 03:07:43,744 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:07:44,019 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-11 03:16:48,711 - my_app - ERROR - Database error occurred in books remove_book:
+NoneType: None
+
+2025-12-11 03:18:56,547 - my_app - ERROR - Database error occurred in books update_book_in_db:
+NoneType: None
+
+2025-12-11 03:19:31,594 - my_app - ERROR - Database error occurred in books update_book_in_db:
+NoneType: None
+
+2025-12-11 03:29:17,470 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:31:45,578 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:31:45,843 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-11 03:32:52,325 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:32:52,615 - my_app - INFO - 10 test books added to database!
+2025-12-11 03:32:52,615 - my_app - INFO - Database created and initialized with tables and 10 test books added to database!
+2025-12-11 03:33:19,766 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:38:45,032 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:38:45,296 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-11 03:38:51,231 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:38:51,276 - my_app - INFO - Imported app and models
+2025-12-11 03:38:51,313 - my_app - INFO - Created database tables
+2025-12-11 03:38:51,337 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,365 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,375 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,406 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,441 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,472 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,528 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,539 - my_app - INFO -  : Database cleaned after test
+2025-12-11 03:38:51,542 - my_app - INFO - Dropped database tables and deleted test DB file
+2025-12-11 03:45:25,330 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:45:25,627 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-11 03:47:37,316 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:47:37,598 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-11 03:49:25,253 - my_app - ERROR - Database error occurred in books remove_book:
+NoneType: None
+
+2025-12-11 03:51:34,933 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:51:35,227 - my_app - INFO - 10 test books added to database!
+2025-12-11 03:51:35,228 - my_app - INFO - Database created and initialized with tables and 10 test books added to database!
+2025-12-11 03:55:28,642 - my_app - INFO - Logger initialized successfully.
+2025-12-11 03:55:28,918 - my_app - WARNING - Database already exists, skipping creation.

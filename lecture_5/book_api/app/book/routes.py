@@ -1,10 +1,10 @@
-from typing import List, Optional, Any
-from fastapi import APIRouter, Depends, Query, HTTPException
-from sqlalchemy import select
+from typing import List, Optional
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from .models import Book
-from .schemas import BookItemCreate, BookItemRead, BookItemUpdate
-from .views import list_items_view, add_item_view, remove_item_view, update_book_view, search_books_view
+from .schemas import BookItemCreate, BookItemRead, BookItemUpdate, MessageResponse
+from .views import (list_items_view, add_item_view, remove_item_view, update_book_view,
+                    search_books_view, get_book_view)
 from ...repository.database import get_db
 
 router = APIRouter()
@@ -30,8 +30,8 @@ router = APIRouter()
 async def list_items(
         page: int = Query(1, ge=1, description="Page number (starting from 1)"),
         limit: int = Query(10, ge=1, le=100, description="Items per page"),
-        db: AsyncSession = Depends(get_db)
-):
+        db: AsyncSession = Depends(get_db),
+) -> list[BookItemRead]:
     """Retrieve paginated list of books.
 
     Args:
@@ -46,7 +46,7 @@ async def list_items(
 
 
 @router.post(
-    "/add",
+    "/",
     response_model=BookItemRead,
     status_code=201,
     summary="Add a new book",
@@ -62,35 +62,55 @@ async def list_items(
         Returns the created book record.
     """,
 )
-async def add_item(item: BookItemCreate, db: AsyncSession = Depends(get_db)) -> Any:
-    """Create a new book record and return it."""
+async def add_item(
+    item: BookItemCreate,
+    db: AsyncSession = Depends(get_db),
+) -> Book:
+    """Create a new book record and return it.
 
+    Args:
+        item (BookItemCreate): Pydantic model containing data for the new book.
+        db (AsyncSession): Active SQLAlchemy async session.
+
+    Returns:
+        BookItemRead: The newly created book as a Pydantic model.
+    """
     return await add_item_view(db, item)
 
 
 @router.delete(
-    "/remove/{item_id}",
+    "/{book_id}",
     summary="Delete a book by ID",
     description="""
         **Delete a book by its ID.**
 
-        - **item_id**: int — ID of the book to delete
+        - **book_id**: int — ID of the book to delete
 
         Returns a confirmation message if the deletion is successful.
         Raises a 404 error if the book does not exist.
     """,
+    response_model=MessageResponse,
     responses={
-        200: {"description": "Book successfully removed"},
-        404: {"description": "Book not found"},
-        500: {"description": "Database error occurred"},
+    200: {"description": "Book successfully removed"},
+    404: {"description": "Book not found"},
+    500: {"description": "Database error occurred"},
     },
 )
-async def remove_item(item_id: int, db: AsyncSession = Depends(get_db)) -> Any:
-    """Endpoint to delete a book by ID.
+async def remove_item(book_id: int, db: AsyncSession = Depends(get_db)) -> MessageResponse:
+    """Delete a book by its ID and return a confirmation message.
 
-    Delegates the operation to the views layer.
+    Args:
+        book_id (int): ID of the book to delete.
+        db (AsyncSession): Active SQLAlchemy async session.
+
+    Raises:
+        HTTPException: If the book with the given ID does not exist (404).
+
+    Returns:
+        MessageResponse: Pydantic model containing a confirmation message.
+                         Example: "Book successfully removed".
     """
-    return await remove_item_view(db, item_id)
+    return await remove_item_view(db, book_id)
 
 
 @router.put(
@@ -98,22 +118,17 @@ async def remove_item(item_id: int, db: AsyncSession = Depends(get_db)) -> Any:
     response_model=BookItemRead,
     summary="Update an existing book",
     description="""
-            Update an existing book record by its ID.
+        Update an existing book record by its ID.
 
-            Only the fields provided in the request are updated (partial update).
-            To set a field to NULL, explicitly pass `null` for that field.
+        - **book_id**: int — Unique identifier of the book to update.
 
-            **Request body:**
-            - title: str (optional) — If provided, updates the title
-            - author: str (optional) — If provided, updates the author  
-            - year: int | null (optional) — If provided, updates the year. 
-                       Pass `null` to clear the year field.
+        This endpoint performs a **partial update**:  
+        only the fields provided in the request body will be updated.
 
-            **Path parameter:**
-            - book_id: int — ID of the book to update
+        To explicitly clear a field, pass `null` for that field.
 
-            **Returns:** Updated book record
-        """,
+        Returns the updated book record.
+    """,
     responses={
         200: {"description": "Book successfully updated"},
         404: {"description": "Book not found"},
@@ -124,7 +139,23 @@ async def update_book(
     book_id: int,
     item: BookItemUpdate,
     db: AsyncSession = Depends(get_db)
-):
+) -> BookItemRead:
+    """Update an existing book by its ID and return the updated record.
+
+    This endpoint performs a partial update: only the fields provided
+    in the request are updated. To clear a field, explicitly pass `null`.
+
+    Args:
+        book_id (int): ID of the book to update.
+        item (BookItemUpdate): Pydantic model containing fields to update.
+        db (AsyncSession): Active SQLAlchemy async session.
+
+    Raises:
+        HTTPException: If the book with the given ID does not exist (404).
+
+    Returns:
+        BookItemRead: Updated book record as a Pydantic model.
+    """
     return await update_book_view(db, book_id, item)
 
 
@@ -133,29 +164,27 @@ async def update_book(
     response_model=List[BookItemRead],
     summary="Search books with optional filters",
     description="""
-        Search for books by optional filters: title, author, and year.
+        Search books using optional filtering and pagination.
 
-        **Query parameters:**
-        - page: int — Page number (starting from 1)
-        - limit: int — Number of items per page
-        - title: str (optional) — Search by title substring
-        - author: str (optional) — Search by author substring
-        - year: int (optional) — Search by exact year
+        You can filter the results by:
+        - **title** — partial match by book title
+        - **author** — partial match by author name
+        - **year** — exact match by publication year
 
-        **Returns:** List of books matching the search criteria
-    """,
-    responses={
-        200: {"description": "List of books matching the search criteria"},
-        500: {"description": "Database error occurred"}
-    }
+        Pagination is controlled using:
+        - **page** — page number (starting from 1)
+        - **limit** — number of items per page
+
+        If no filters are provided, an empty list is returned.
+    """
 )
 async def search_books(
-    page: int = Query(1, ge=1, description="Page number (starting from 1)"),
-    limit: int = Query(10, ge=1, le=100, description="Items per page"),
-    title: Optional[str] = Query(None, description="Search by title"),
-    author: Optional[str] = Query(None, description="Search by author"),
-    year: Optional[int] = Query(None, description="Search by year"),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    page: int = 1,
+    limit: int = 10,
+    title: Optional[str] = None,
+    author: Optional[str] = None,
+    year: Optional[int] = None
 ):
     """Search for books using optional filters and pagination.
 
@@ -172,9 +201,8 @@ async def search_books(
         db (AsyncSession): Active SQLAlchemy database session (injected by Depends on).
 
     Returns:
-        List[BookItemRead]: A list of books matching the search criteria.
+        List[BookItemRead]: A list of books matching the search criteria or [] if empty.
     """
-
     return await search_books_view(db, page, limit, title, author, year)
 
 
@@ -182,6 +210,15 @@ async def search_books(
     "/{book_id}",
     response_model=BookItemRead,
     summary="Get book by ID",
+    description="""
+        Retrieve a single book by its unique identifier(using for tests).
+    
+        This endpoint returns full information about a book
+        if a record with the specified **book_id** exists in the database.
+
+        - **book_id**: int — ID of the book 
+        If the book is not found, a **404 Not Found** error is returned.
+    """,
     responses={
         200: {"description": "Book found"},
         404: {"description": "Book not found"},
@@ -190,10 +227,4 @@ async def search_books(
 async def get_book(book_id: int, db: AsyncSession = Depends(get_db)):
     """Retrieve a single book by ID (using for tests)."""
 
-    result = await db.execute(select(Book).where(Book.id == book_id))
-    book = result.scalar_one_or_none()
-
-    if not book:
-        raise HTTPException(status_code=404, detail="Book not found")
-
-    return book
+    return await get_book_view(db, book_id)

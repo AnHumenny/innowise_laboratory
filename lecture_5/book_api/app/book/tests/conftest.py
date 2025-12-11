@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import pytest
+from lecture_5.book_api.core.utils import logger
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, "../../../../.."))
@@ -12,7 +13,7 @@ sys.path.insert(0, project_root)
 try:
     from lecture_5.book_api.main import app
     from lecture_5.book_api.app.book.models import Base, Book
-    print("Imported app and models")
+    logger.info("Imported app and models")
 except ImportError as e:
     raise ImportError(f"Cannot import app/models: {e}")
 
@@ -24,14 +25,14 @@ def engine():
     engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False}, echo=False)
 
     Base.metadata.create_all(bind=engine)
-    print("Created database tables")
+    logger.info("Created database tables")
 
     yield engine
 
     Base.metadata.drop_all(bind=engine)
     if os.path.exists("test_books.db"):
         os.remove("test_books.db")
-    print("Dropped database tables and deleted test DB file")
+    logger.info("Dropped database tables and deleted test DB file")
 
 
 @pytest.fixture
@@ -61,8 +62,8 @@ def clean_database(db_session):
     try:
         db_session.query(Book).delete()
         db_session.commit()
-        print(" : Database cleaned after test")
+        logger.info(" : Database cleaned after test")
 
-    except Exception as e:
+    except Exception as er:
         db_session.rollback()
-        print(f"Could not clean database: {e}")
+        logger.info(f"Could not clean database: {er}")

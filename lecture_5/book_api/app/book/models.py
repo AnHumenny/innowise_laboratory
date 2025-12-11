@@ -9,8 +9,7 @@ class Base(DeclarativeBase):
     Attributes:
         id (int): Primary key, unique identifier for the record.
     """
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    pass
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
 
 class Book(Base):
@@ -27,8 +26,8 @@ class Book(Base):
     __tablename__ = "book__book"
 
     title: Mapped[str] = mapped_column(String, nullable=False)
-    author: Mapped[str] = mapped_column(String, nullable=False)
-    year: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    author: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    year: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, index=True)
 
     __table_args__ = (
         CheckConstraint('year >= 0 OR year IS NULL', name='year_non_negative_or_null'),

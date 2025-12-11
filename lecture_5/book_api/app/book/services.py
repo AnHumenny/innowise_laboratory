@@ -2,7 +2,7 @@ import traceback
 from sqlite3 import IntegrityError
 from typing import Optional, List
 from fastapi import HTTPException
-from sqlalchemy import select, or_
+from sqlalchemy import select, and_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from .models import Book
@@ -161,29 +161,23 @@ async def update_book_in_db(db: AsyncSession, book_id: int, item: BookItemUpdate
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 
-async def search_books_in_db(db: AsyncSession, page: int, limit: int, title: Optional[str] = None,
-                             author: Optional[str] = None, year: Optional[int] = None
-                             ) -> List[Book]:
-    """Search for books using multiple optional filters.
+async def search_books_in_db(
+    db: AsyncSession,
+    page: int,
+    limit: int,
+    title: Optional[str] = None,
+    author: Optional[str] = None,
+    year: Optional[int] = None
+) -> List[Book]:
+    """
+    Search for books using multiple optional filters.
 
     Performs partial matching for `title` and `author`.
-    All provided filters are combined using OR logic.
+    All provided filters are combined using AND logic.
     If no filters are provided, returns an empty list.
-
-    Args:
-        db (AsyncSession): Active SQLAlchemy asynchronous session.
-        page (int): Current page number (1-based).
-        limit (int): Number of items per page.
-        title (Optional[str]): Filter by title (substring, case-insensitive).
-        author (Optional[str]): Filter by author (substring, case-insensitive).
-        year (Optional[int]): Filter by exact publication year.
 
     Returns:
         List[Book]: List of books matching the search criteria.
-
-    Raises:
-        HTTPException:
-            - 500: If a database error occurs (transaction rollback performed).
     """
     try:
         offset = (page - 1) * limit
@@ -193,20 +187,48 @@ async def search_books_in_db(db: AsyncSession, page: int, limit: int, title: Opt
             filters.append(Book.title.ilike(f"%{title}%"))
         if author:
             filters.append(Book.author.ilike(f"%{author}%"))
-        if year:
+        if year is not None:
             filters.append(Book.year == year)
 
         if not filters:
             return []
 
-        query = select(Book).where(or_(*filters)).offset(offset).limit(limit)
+        query = select(Book).where(and_(*filters)).offset(offset).limit(limit)
         result = await db.execute(query)
-        books: List[Book] = result.scalars().all()          # type: ignore[list-item]
+        books: List[Book] = result.scalars().all()  # type: ignore[list-item]
         return books
 
     except SQLAlchemyError as e:
-        logger.error("Database transaction rolled back in book search_books_in_db "
-                     "due to an error:\n%s", traceback.format_exc())
-
+        logger.error(
+            "Database transaction rolled back in search_books_in_db:\n%s",
+            traceback.format_exc()
+        )
         await db.rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
+
+async def get_book_in_db(db: AsyncSession, book_id: int) -> Book:
+    """Service layer method for retrieving a book by its ID from the database.
+
+    Executes an asynchronous database query to fetch a single book record.
+    If the book is not found, raises an HTTPException with 404 status.
+    This function is used as part of the business logic layer and should not
+    contain response serialization logic.
+
+    Args:
+        db (AsyncSession): Active asynchronous database session.
+        book_id (int): Unique identifier of the book.
+
+    Returns:
+        Book: SQLAlchemy model instance of the found book.
+
+    Raises:
+        HTTPException: If the book with the given ID does not exist.
+    """
+    result = await db.execute(select(Book).where(Book.id == book_id))
+    book = result.scalar_one_or_none()
+
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+
+    return book

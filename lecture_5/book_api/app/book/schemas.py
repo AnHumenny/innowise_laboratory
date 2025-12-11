@@ -46,3 +46,14 @@ class BookItemUpdate(BaseModel):
     title: Optional[str] = Field(None, min_length=1)
     author: Optional[str] = Field(None, min_length=1)
     year: Optional[int] = Field(None, ge=0)
+
+
+class MessageResponse(BaseModel):
+    """
+    Pydantic model for a standard API text response.
+
+    Attributes:
+        message (str): A textual message, typically indicating the result of an operation.
+    """
+
+    message: str

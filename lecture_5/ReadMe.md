@@ -3,9 +3,13 @@
 ## Project Description
 
 This project is a FastAPI learning application that implements a full set of CRUD operations
-for the Book entity. The application allows you to create books, 
-get a list and individual entries, update data, delete books, 
-search by name, and work with pagination.
+for the Book entity. The application allows you to create books,
+get a list and individual entries, update data, delete books,
+search by name and work with pagination. 
+
+After the first launch, 
+the application checks for the database and, if it is missing,
+creates it by filling in test data or skips the creation step if available.
 
 The project is built on an asynchronous stack:
 **FastAPI + SQLAlchemy Async + SQLite + Pydantic**
@@ -64,7 +68,7 @@ lecture_5/
     │   │   └── views.py
     │   │
     │   ├── core/
-    │   │   ├── log/
+    │   │   ├── log/*.log
     │   │   │   ├── app.log
     │   │   │   ├── test.run.log
     │   │   │   └── test_log.py
@@ -80,11 +84,10 @@ lecture_5/
     │   ├── __init__.py
     │   └── main.py
     │
-    └── __init__.py
+    ├── __init__.py
     └── ReadMe.md
 
 ```
-
 
 ## Launching the app
 
@@ -100,8 +103,10 @@ uvicorn lecture_5.book_api.main:app --reload
 After launching, the API is available here:  
 http://localhost:8000/docs
 
+
 ## Testing
 The project contains API integration tests.
+
 
 ### Running all tests:
 pytest -v -s
@@ -111,11 +116,11 @@ pytest -v -s
 pytest lecture_5/book_api/app/books/tests/test_routes.py -v -s
 
 
-
 ## Environment Settings
 The database is configured in `repository/database.py`.  
 SQLite is used by default. At the first launch, the existence of the database is checked and, 
 if it does not exist, it is created and filled with test data.
+
 
 ## Notes
 - The tests use a temporary test database that is created before launch and deleted after.

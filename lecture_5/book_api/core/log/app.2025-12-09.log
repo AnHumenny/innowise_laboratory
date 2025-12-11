@@ -1,0 +1,125 @@
+2025-12-09 07:14:35,282 - my_app - INFO - Logger initialized successfully.
+2025-12-09 07:14:35,549 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 13:48:41,217 - my_app - INFO - Logger initialized successfully.
+2025-12-09 13:49:18,563 - my_app - INFO - Logger initialized successfully.
+2025-12-09 13:49:18,694 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 14:32:41,716 - my_app - INFO - Logger initialized successfully.
+2025-12-09 14:32:41,846 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 14:57:09,305 - my_app - INFO - Logger initialized successfully.
+2025-12-09 14:57:09,432 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 19:21:01,734 - my_app - INFO - Logger initialized successfully.
+2025-12-09 19:21:02,002 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 20:16:48,267 - my_app - INFO - Logger initialized successfully.
+2025-12-09 20:16:48,544 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 20:55:30,488 - my_app - INFO - Logger initialized successfully.
+2025-12-09 20:55:30,859 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 20:58:50,889 - my_app - INFO - Logger initialized successfully.
+2025-12-09 20:58:51,167 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:01:08,121 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:01:08,406 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:02:05,341 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:03:37,687 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:04:09,866 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:04:10,148 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:05:44,095 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:05:44,393 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:07:41,587 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:07:41,874 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:08:07,643 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:08:07,998 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:14:06,277 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:14:06,568 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:14:09,762 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:14:26,263 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:14:26,530 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:14:28,461 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:17:18,267 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:17:18,554 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:17:21,858 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:22:53,700 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:22:53,995 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:24:39,481 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:24:39,746 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:24:41,621 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:26:05,661 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:26:05,976 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:29:52,601 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:29:52,886 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:30:09,004 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:30:09,278 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:31:27,129 - my_app - ERROR - Database error occurred in books remove_book:
+NoneType: None
+
+2025-12-09 21:36:42,738 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:36:43,029 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:38:24,215 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:38:24,498 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:39:44,793 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:39:45,103 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:40:14,252 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:40:14,535 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:40:44,592 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:40:44,950 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:41:07,170 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:41:07,436 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:42:54,238 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:42:54,515 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:43:32,420 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:44:09,947 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:44:10,217 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:46:10,699 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:46:10,994 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:46:43,352 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:46:43,632 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:47:53,396 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:47:53,678 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:49:49,649 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:49:49,929 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:49:52,633 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:52:24,582 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:52:24,869 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:52:37,667 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:52:37,949 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:52:58,202 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:52:58,483 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:54:53,059 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:54:53,349 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:55:03,339 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:55:03,668 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:55:37,957 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:55:38,241 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:56:42,971 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:56:43,248 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:57:05,524 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:57:05,795 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:57:21,703 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:57:21,979 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:58:21,634 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:58:21,914 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:58:37,774 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:58:38,040 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 21:59:04,093 - my_app - INFO - Logger initialized successfully.
+2025-12-09 21:59:04,378 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:01:04,215 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:01:04,499 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:03:03,697 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:03:03,994 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:04:34,919 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:04:35,214 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:05:57,340 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:05:57,625 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:06:38,186 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:06:38,480 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:06:41,797 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:08:03,749 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:08:04,040 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:10:39,346 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:10:39,628 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:11:44,937 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:11:45,214 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:11:49,228 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:13:09,192 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:13:09,495 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:18:49,125 - my_app - INFO - Logger initialized successfully.
+2025-12-09 22:18:49,252 - my_app - WARNING - Database already exists, skipping creation.
+2025-12-09 22:39:41,082 - my_app - INFO - Logger initialized successfully.

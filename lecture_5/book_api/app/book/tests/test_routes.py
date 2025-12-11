@@ -13,7 +13,7 @@ def created_book_id(client) -> int:
         "description": "Created via fixture"
     }
 
-    response = client.post("/books/add", json=book_data)
+    response = client.post("/books/", json=book_data)
     assert response.status_code in [200, 201]
 
     book_id = response.json()["id"]
@@ -48,7 +48,7 @@ def test_list_books_api(client):
 
 
 def test_create_book_api(client):
-    """API test: POST /books/add - create a book through the API."""
+    """API test: POST /books/ - create a book through the API."""
 
     test_name = "test_create_book_api"
     test_logger.info(f"Starting test: {test_name}")
@@ -60,8 +60,8 @@ def test_create_book_api(client):
         "description": "Created via API test"
     }
 
-    response = client.post("/books/add", json=book_data)
-    test_logger.info(f"{test_name}: POST /books/add -> {response.status_code}")
+    response = client.post("/books/", json=book_data)
+    test_logger.info(f"{test_name}: POST /books/ -> {response.status_code}")
 
     assert response.status_code in [200, 201]
 
@@ -80,8 +80,8 @@ def test_create_book_api_validation(client):
     test_logger.info(f"Starting test: {test_name}")
 
     invalid_data = {"author": "Author Only"}
-    response = client.post("/books/add", json=invalid_data)
-    test_logger.info(f"{test_name}: POST /books/add (invalid) -> {response.status_code}")
+    response = client.post("/books/", json=invalid_data)
+    test_logger.info(f"{test_name}: POST /books/ (invalid) -> {response.status_code}")
 
     assert response.status_code == 422
 
@@ -135,13 +135,13 @@ def test_update_book_api(client, created_book_id):
 
 
 def test_delete_book_api(client, created_book_id):
-    """API test: DELETE /books/remove/{id} - deleting a book."""
+    """API test: DELETE /books/{id} - deleting a book."""
 
     test_name = "test_delete_book_api"
     test_logger.info(f"Starting test: {test_name}")
 
-    response = client.delete(f"/books/remove/{created_book_id}")
-    test_logger.info(f"{test_name}: DELETE /books/remove/{created_book_id} -> {response.status_code}")
+    response = client.delete(f"/books/{created_book_id}")
+    test_logger.info(f"{test_name}: DELETE /books/{created_book_id} -> {response.status_code}")
 
     assert response.status_code == 200
 
@@ -170,7 +170,7 @@ def test_search_books_api(client):
 
     created_ids = []
     for book in test_books:
-        response = client.post("/books/add", json=book)
+        response = client.post("/books", json=book)
         book_id = response.json()["id"]
         created_ids.append(book_id)
         test_logger.info(f"{test_name}: Created test book: {book['title']} (id={book_id})")
@@ -186,7 +186,7 @@ def test_search_books_api(client):
     test_logger.info(f"{test_name}: Found {len(data)} books with 'Python'")
 
     for book_id in created_ids:
-        client.delete(f"/books/remove/{book_id}")
+        client.delete(f"/books/{book_id}")
 
     test_logger.info(f"Test passed: {test_name}")
 

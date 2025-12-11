@@ -6,14 +6,16 @@ import os
 
 class CustomTimedRotatingFileHandler(TimedRotatingFileHandler):
     """A custom handler that saves rotated log files in format:
+
     app.2025-12-06.log
     instead of the default:
     app.log.2025-12-06
     """
 
     def rotation_filename(self, default_name: str) -> str:
-        """Convert default name ('app.log.2025-12-06')
-           into desired format ('app.2025-12-06.log').
+        """
+        Convert default name ('app.log.2025-12-06')
+        into desired format ('app.2025-12-06.log').
         """
         directory, filename = os.path.split(default_name)
         base, date_part = os.path.splitext(filename)

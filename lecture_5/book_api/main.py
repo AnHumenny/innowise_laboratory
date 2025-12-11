@@ -37,12 +37,11 @@ app.include_router(book_router, prefix="/books", tags=["books"])
 
 @app.get("/")
 async def start_page():
-    """Endpoint for checking the operation of the FastAPI application.
-
-    Returns a simple welcome message in JSON format.
+    """Root endpoint to verify that the FastAPI application is running.
 
     Returns:
-        dict: A message with the "message" key confirming that the application is running.
+        HTMLResponse: An HTML message confirming that the application is running,
+                      including a link to `/docs` for API documentation.
     """
     html_content = ("<div align=center><h4>Hello FastAPI with a book management application!"
                     "<br><a href='/docs'>Go to the page documentation</a></h4></div>")
